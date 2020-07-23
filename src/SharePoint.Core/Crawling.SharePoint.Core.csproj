@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ProjectGuid>{46D89BED-5F80-454B-9496-3163759DBEB4}</ProjectGuid>
+    <RootNamespace>CluedIn.Crawling.SharePoint.Core</RootNamespace>
+    <AssemblyName>CluedIn.Crawling.SharePoint.Core</AssemblyName>
+    <TargetFramework>net452</TargetFramework>
+    <AssemblyTitle>Crawling.SharePoint.Core</AssemblyTitle>
+    <Product>Crawling.SharePoint.Core</Product>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="CluedIn.Core" Version="2.4.0" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.6.0" />
+    <PackageReference Include="System.IO.Compression" Version="4.3.0" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+  </ItemGroup>
+</Project>

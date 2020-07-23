@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net452</TargetFramework>
+    <AssemblyTitle>Crawling.SharePoint.Integration.Test</AssemblyTitle>
+    <Product>Crawling.SharePoint.Integration.Test</Product>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <RootNamespace>Crawling.SharePoint.Integration.Test</RootNamespace>
+    <AssemblyName>Crawling.SharePoint.Integration.Test</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="CluedIn.Core" Version="2.4.0" />
+    <PackageReference Include="CluedIn.Crawling" Version="2.4.0" />
+    <PackageReference Include="CrawlerIntegrationTesting" Version="2.4.0" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.6.0" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+    <PackageReference Include="System.IO.Compression" Version="4.3.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\SharePoint.Core\Crawling.SharePoint.Core.csproj" />
+    <ProjectReference Include="..\..\..\src\SharePoint.Crawling\Crawling.SharePoint.csproj" />
+    <ProjectReference Include="..\..\..\src\SharePoint.Infrastructure\Crawling.SharePoint.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\SharePoint.Provider\Provider.SharePoint.csproj" />
+  </ItemGroup>
+</Project>

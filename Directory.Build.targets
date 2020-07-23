@@ -1,0 +1,11 @@
+<Project>
+
+    <ItemGroup>
+
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-18618-05">
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+
+    </ItemGroup>
+
+</Project>
