@@ -2,6 +2,7 @@ using System.Collections.Generic;
 
 using CluedIn.Core.Crawling;
 using CluedIn.Crawling.SharePoint.Core;
+using CluedIn.Crawling.SharePoint.Core.Models;
 using CluedIn.Crawling.SharePoint.Infrastructure.Factories;
 
 namespace CluedIn.Crawling.SharePoint
@@ -24,7 +25,10 @@ namespace CluedIn.Crawling.SharePoint
             var client = clientFactory.CreateNew(sharepointcrawlJobData);
 
             //retrieve data from provider and yield objects
-            
-        }       
+            foreach (var item in client.Get<Contact>("contact", sharepointcrawlJobData))
+            {
+                yield return item;
+            }
+        }
     }
 }

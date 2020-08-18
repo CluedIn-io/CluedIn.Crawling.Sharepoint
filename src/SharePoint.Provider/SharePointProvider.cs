@@ -14,6 +14,7 @@ using CluedIn.Crawling.SharePoint.Core;
 using CluedIn.Crawling.SharePoint.Infrastructure.Factories;
 using CluedIn.Providers.Models;
 using Newtonsoft.Json;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
 
 namespace CluedIn.Provider.SharePoint
 {
@@ -42,6 +43,29 @@ namespace CluedIn.Provider.SharePoint
             { sharepointCrawlJobData.Url = configuration[SharePointConstants.KeyName.Url].ToString(); }
             if (configuration.ContainsKey(SharePointConstants.KeyName.DeltaCrawlEnabled))
             { sharepointCrawlJobData.DeltaCrawlEnabled = bool.Parse(configuration[SharePointConstants.KeyName.DeltaCrawlEnabled].ToString()); }
+
+            if (configuration.ContainsKey(SharePointConstants.KeyName.UserName))
+            { sharepointCrawlJobData.UserName = configuration[SharePointConstants.KeyName.UserName].ToString(); }
+            if (configuration.ContainsKey(SharePointConstants.KeyName.Password))
+            { sharepointCrawlJobData.Password = configuration[SharePointConstants.KeyName.Password].ToString(); }
+            sharepointCrawlJobData.ClientId = ConfigurationManager.AppSettings.GetValue<string>("Providers.SharePointClientID", null);
+            sharepointCrawlJobData.ClientSecret = ConfigurationManager.AppSettings.GetValue<string>("Providers.SharePointClientSecret", null);
+
+            string apiVersion = "9.1";
+            string webApiUrl = $"{sharepointCrawlJobData.Url}/api/data/v{apiVersion}/";
+
+            if (sharepointCrawlJobData.UserName != null && sharepointCrawlJobData.Password != null)
+            {
+                Crawling.SharePoint.Infrastructure.SharePointClient.RefreshToken(sharepointCrawlJobData);
+            }
+            else
+            {
+                var clientCredential = new ClientCredential(sharepointCrawlJobData.ClientId, sharepointCrawlJobData.ClientSecret);
+                var authParameters = await AuthenticationParameters.CreateFromResourceUrlAsync(new Uri(webApiUrl));
+                var authContext = new AuthenticationContext(authParameters.Authority);
+                var authResult = authContext.AcquireTokenAsync(authParameters.Resource, clientCredential).Result;
+                sharepointCrawlJobData.TargetApiKey = authResult.AccessToken;
+            }
 
             return await Task.FromResult(sharepointCrawlJobData);
         }

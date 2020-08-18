@@ -11,6 +11,8 @@ namespace CluedIn.Crawling.SharePoint.Core
         {
             public const string Url = nameof(Url);
             public const string DeltaCrawlEnabled = nameof(DeltaCrawlEnabled);
+            public const string UserName = nameof(UserName);
+            public const string Password = nameof(Password);
         }
 
         // TODO Complete the following section

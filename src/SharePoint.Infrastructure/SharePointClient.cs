@@ -8,6 +8,7 @@ using CluedIn.Core.Logging;
 using CluedIn.Core.Providers;
 using CluedIn.Crawling.SharePoint.Core;
 using CluedIn.Crawling.SharePoint.Core.Models;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Newtonsoft.Json;
 using RestSharp;
 
@@ -74,7 +75,20 @@ namespace CluedIn.Crawling.SharePoint.Infrastructure
             return new AccountInformation("", ""); 
         }
 
-        public IEnumerable<T> Get<T>(string value)
+        public static void RefreshToken(SharePointCrawlJobData sharePointCrawlJobData)
+        {
+            string apiVersion = "9.1";
+            string webApiUrl = $"{sharePointCrawlJobData.Url}/api/data/v{apiVersion}/";
+
+            var userCredential = new UserCredential(sharePointCrawlJobData.UserName, sharePointCrawlJobData.Password);
+            var authParameters = AuthenticationParameters.CreateFromResourceUrlAsync(new Uri(webApiUrl)).Result;
+            var authContext = new AuthenticationContext(authParameters.Authority, false);
+            var authResult = authContext.AcquireTokenAsync(authParameters.Resource, sharePointCrawlJobData.ClientId, userCredential).Result;
+            var refreshToken = authContext.AcquireTokenByRefreshTokenAsync(authResult.RefreshToken, sharePointCrawlJobData.ClientId).Result;
+            sharePointCrawlJobData.ApiKey = refreshToken.AccessToken;
+        }
+
+        public IEnumerable<T> Get<T>(string value, SharePointCrawlJobData sharePointCrawlJobData)
         {
             DateTimeOffset lastCrawlFinishTime;
             if (_sharePointCrawlJobData.LastCrawlFinishTime == DateTimeOffset.Parse("1/1/0001 12:00:00 AM +00:00"))
@@ -89,8 +103,6 @@ namespace CluedIn.Crawling.SharePoint.Infrastructure
             var filter = $"(createdon ge {lastCrawlFinishTime:yyyy-MM-ddThh:mm:ssZ} or modifiedon ge {lastCrawlFinishTime:yyyy-MM-ddThh:mm:ssZ})";
 
             var url = _sharePointCrawlJobData.Url;
-            //TODO replace with values from config
-            var token = "";
 
             if (_sharePointCrawlJobData.DeltaCrawlEnabled)
             {
@@ -98,32 +110,50 @@ namespace CluedIn.Crawling.SharePoint.Infrastructure
             }
 
             ResultList<T> resultList = null;
-
-            using (HttpClient httpClient = new HttpClient())
+            while (true)
             {
-                httpClient.Timeout = new TimeSpan(0, 2, 0);
-                httpClient.DefaultRequestHeaders.Add("Prefer", "odata.maxpagesize=100");
-                httpClient.DefaultRequestHeaders.Add("OData-MaxVersion", "4.0");
-                httpClient.DefaultRequestHeaders.Add("OData-Version", "4.0");
-                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                HttpResponseMessage responseMessage = httpClient.GetAsync(url).Result;
-                var content = responseMessage.Content.ReadAsStringAsync().Result;
-                if (responseMessage.StatusCode == HttpStatusCode.Unauthorized)
+                using (HttpClient httpClient = new HttpClient())
                 {
-                    //TODO: add try token refresh
-                }
-                else if (responseMessage.StatusCode != HttpStatusCode.OK)
-                {
-                    //TODO log error
-                }
+                    try
+                    {
+                        httpClient.Timeout = new TimeSpan(0, 2, 0);
+                        httpClient.DefaultRequestHeaders.Add("Prefer", "odata.maxpagesize=100");
+                        httpClient.DefaultRequestHeaders.Add("OData-MaxVersion", "4.0");
+                        httpClient.DefaultRequestHeaders.Add("OData-Version", "4.0");
+                        httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sharePointCrawlJobData.ApiKey);
+                        HttpResponseMessage responseMessage = httpClient.GetAsync(url).Result;
+                        var content = responseMessage.Content.ReadAsStringAsync().Result;
+                        if (responseMessage.StatusCode == HttpStatusCode.Unauthorized)
+                        {
+                            RefreshToken(sharePointCrawlJobData);
+                            continue;
+                        }
+                        else if (responseMessage.StatusCode != HttpStatusCode.OK)
+                        {
+                            log.Error(() => "Connection failed " + responseMessage.StatusCode);
+                        }
 
 
-                resultList = JsonConvert.DeserializeObject<ResultList<T>>(content, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
-                if (resultList?.Value != null)
-                {
-                    foreach (var item in resultList.Value)
-                        yield return item;
+                        resultList = JsonConvert.DeserializeObject<ResultList<T>>(content, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+                    }
+                    catch (Exception e)
+                    {
+                        log.Error(() => e.Message);
+                    }
+                    if (resultList?.Value != null)
+                    {
+                        foreach (var item in resultList.Value)
+                            yield return item;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                    if (resultList.NextLink == null)
+                    {
+                        break;
+                    }
                 }
             }
         }
