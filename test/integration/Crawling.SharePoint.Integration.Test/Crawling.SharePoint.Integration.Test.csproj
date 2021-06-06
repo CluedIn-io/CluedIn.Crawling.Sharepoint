@@ -1,6 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <AssemblyTitle>Crawling.SharePoint.Integration.Test</AssemblyTitle>
     <Product>Crawling.SharePoint.Integration.Test</Product>
     <OutputPath>bin\$(Configuration)\</OutputPath>

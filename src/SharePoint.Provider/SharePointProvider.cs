@@ -60,11 +60,12 @@ namespace CluedIn.Provider.SharePoint
             }
             else
             {
+                // TODO : Update ADAL to new Credential(s) from the 2018 one.
                 var clientCredential = new ClientCredential(sharepointCrawlJobData.ClientId, sharepointCrawlJobData.ClientSecret);
-                var authParameters = await AuthenticationParameters.CreateFromResourceUrlAsync(new Uri(webApiUrl));
-                var authContext = new AuthenticationContext(authParameters.Authority);
-                var authResult = authContext.AcquireTokenAsync(authParameters.Resource, clientCredential).Result;
-                sharepointCrawlJobData.TargetApiKey = authResult.AccessToken;
+                //var authParameters = await AuthenticationParameters.CreateFromResourceUrlAsync(new Uri(webApiUrl));
+                //var authContext = new AuthenticationContext(authParameters.Authority);
+                //var authResult = authContext.AcquireTokenAsync(authParameters.Resource, clientCredential).Result;
+                //sharepointCrawlJobData.TargetApiKey = authResult.AccessToken;
             }
 
             return await Task.FromResult(sharepointCrawlJobData);

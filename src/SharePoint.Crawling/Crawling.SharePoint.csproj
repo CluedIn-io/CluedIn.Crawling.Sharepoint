@@ -1,9 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProjectGuid>{5F649221-EBE9-4E5C-9463-F4E40A435435}</ProjectGuid>
     <RootNamespace>CluedIn.Crawling.SharePoint</RootNamespace>
     <AssemblyName>CluedIn.Crawling.SharePoint</AssemblyName>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <AssemblyTitle>CluedIn.Crawling.SharePoint</AssemblyTitle>
     <Product>CluedIn.Crawling.SharePoint</Product>
@@ -28,16 +29,14 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CluedIn.Core" Version="2.4.0" />
-    <PackageReference Include="CluedIn.Crawling" Version="2.4.0" />
-    <PackageReference Include="ComponentHost" Version="1.0.0.46" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.6.0" />
-    <PackageReference Include="Microsoft.Web.Xdt" Version="2.1.1" />
-    <PackageReference Include="Rx-Core" Version="2.2.5" />
-    <PackageReference Include="Rx-Interfaces" Version="2.2.5" />
-    <PackageReference Include="Rx-Linq" Version="2.2.5" />
+    <PackageReference Include="CluedIn.Core" Version="3.2.2" />
+    <PackageReference Include="CluedIn.Crawling" Version="3.2.2" />
+    <PackageReference Include="ComponentHost" Version="2.0.0" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Microsoft.Web.Xdt" Version="3.1.0" />
+
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
     <PackageReference Include="System.IO.Compression" Version="4.3.0" />
-    <PackageReference Include="System.ServiceModel.Primitives" Version="4.4.1" />
+    <PackageReference Include="System.ServiceModel.Primitives" Version="4.8.1" />
   </ItemGroup>
 </Project>

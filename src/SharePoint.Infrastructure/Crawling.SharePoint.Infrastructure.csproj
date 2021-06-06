@@ -1,9 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProjectGuid>{DE5BE162-01C7-4D2F-98F4-144E2EEB5993}</ProjectGuid>
     <RootNamespace>CluedIn.Crawling.SharePoint.Infrastructure</RootNamespace>
     <AssemblyName>CluedIn.Crawling.SharePoint.Infrastructure</AssemblyName>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <AssemblyTitle>Crawling.SharePoint.Client</AssemblyTitle>
     <Product>Crawling.SharePoint.Client</Product>
     <OutputPath>bin\$(Configuration)\</OutputPath>
@@ -18,13 +19,13 @@
     <ProjectReference Include="..\SharePoint.Core\Crawling.SharePoint.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CluedIn.Core" Version="2.4.0" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.6.0" />
-    <PackageReference Include="Microsoft.IdentityModel.Clients.ActiveDirectory" Version="2.29.0" />
-    <PackageReference Include="Microsoft.Net.Http" Version="2.2.29" />
-    <PackageReference Include="System.Net.Http" Version="4.3.4" />
-    <PackageReference Include="RestSharp" Version="105.2.3" />
+    <PackageReference Include="CluedIn.Logging" Version="3.2.2" />
+    <PackageReference Include="Microsoft.IdentityModel.Clients.ActiveDirectory" Version="5.2.9" />
+    <PackageReference Include="RestSharp" Version="106.11.7" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
     <PackageReference Include="System.IO.Compression" Version="4.3.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.0.0" />
   </ItemGroup>
 </Project>

@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Castle.Core.Logging;
 using CluedIn.Core.Logging;
 using CluedIn.Core.Providers;
 using CluedIn.Crawling.SharePoint.Core;
@@ -54,7 +55,7 @@ namespace CluedIn.Crawling.SharePoint.Infrastructure
         {
             var request = new RestRequest(url, Method.GET);
 
-            var response = await client.ExecuteTaskAsync(request);
+            var response = await client.ExecuteAsync(request);
 
             if (response.StatusCode != HttpStatusCode.OK)
             {
@@ -79,13 +80,14 @@ namespace CluedIn.Crawling.SharePoint.Infrastructure
         {
             string apiVersion = "9.1";
             string webApiUrl = $"{sharePointCrawlJobData.Url}/api/data/v{apiVersion}/";
-
+            /*
             var userCredential = new UserCredential(sharePointCrawlJobData.UserName, sharePointCrawlJobData.Password);
             var authParameters = AuthenticationParameters.CreateFromResourceUrlAsync(new Uri(webApiUrl)).Result;
             var authContext = new AuthenticationContext(authParameters.Authority, false);
             var authResult = authContext.AcquireTokenAsync(authParameters.Resource, sharePointCrawlJobData.ClientId, userCredential).Result;
             var refreshToken = authContext.AcquireTokenByRefreshTokenAsync(authResult.RefreshToken, sharePointCrawlJobData.ClientId).Result;
             sharePointCrawlJobData.ApiKey = refreshToken.AccessToken;
+            */
         }
 
         public IEnumerable<T> Get<T>(string value, SharePointCrawlJobData sharePointCrawlJobData)
