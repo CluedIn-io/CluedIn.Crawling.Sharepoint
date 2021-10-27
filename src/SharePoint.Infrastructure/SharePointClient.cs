@@ -80,14 +80,14 @@ namespace CluedIn.Crawling.SharePoint.Infrastructure
         {
             string apiVersion = "9.1";
             string webApiUrl = $"{sharePointCrawlJobData.Url}/api/data/v{apiVersion}/";
-            /*
+            
             var userCredential = new UserCredential(sharePointCrawlJobData.UserName, sharePointCrawlJobData.Password);
             var authParameters = AuthenticationParameters.CreateFromResourceUrlAsync(new Uri(webApiUrl)).Result;
             var authContext = new AuthenticationContext(authParameters.Authority, false);
             var authResult = authContext.AcquireTokenAsync(authParameters.Resource, sharePointCrawlJobData.ClientId, userCredential).Result;
             var refreshToken = authContext.AcquireTokenByRefreshTokenAsync(authResult.RefreshToken, sharePointCrawlJobData.ClientId).Result;
             sharePointCrawlJobData.ApiKey = refreshToken.AccessToken;
-            */
+            
         }
 
         public IEnumerable<T> Get<T>(string value, SharePointCrawlJobData sharePointCrawlJobData)
