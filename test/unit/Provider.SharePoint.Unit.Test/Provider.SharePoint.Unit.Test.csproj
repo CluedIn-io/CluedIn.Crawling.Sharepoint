@@ -1,6 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <AssemblyTitle>Provider.SharePoint.Unit.Test</AssemblyTitle>
     <Product>Provider.SharePoint.Unit.Test</Product>
     <OutputPath>bin\$(Configuration)\</OutputPath>
@@ -12,8 +13,6 @@
     <DebugType>pdbonly</DebugType>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="CluedIn.Core" Version="2.4.0" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.6.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
     <PackageReference Include="System.IO.Compression" Version="4.3.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
